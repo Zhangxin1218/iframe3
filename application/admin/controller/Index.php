@@ -19,6 +19,6 @@ class Index extends Base
      * @date 2020/6/3 14:10
      */
     public function welcome() {
-        echo '欢迎使用';
+        echo '欢迎使用111';
     }
 }

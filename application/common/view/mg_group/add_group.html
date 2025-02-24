@@ -1,0 +1,137 @@
+{include file="common@public/header"}
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-card">
+            <div class="layui-card-header">{$page_title}</div>
+            <div class="layui-card-body">
+                <form class="layui-form padsome" action="">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">父级管理组</label>
+                        <div class="layui-input-block">
+                            <select name="parent_id">
+                                <option value="0">请选择父级管理组</option>
+                                {foreach $group_list as $item}
+                                <option value="{$item.id}" {if condition="$data.parent_id eq $item.id"}selected{/if}>{$item.group_name|raw}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">管理组名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="group_name" value="{$data.group_name}" lay-verify="required" autocomplete="off" placeholder="请输入菜单名称" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">管理组权限</label>
+                        {foreach $access_list as $item}
+                        <div class="layui-input-block">
+                            <input type="checkbox" name="access" data-level="{$item.level}" lay-filter="checkAuth" value="{$item.id}" title="{$item.name}" {if condition="in_array($item['id'], $data['access'])"}checked{/if}>
+                        </div>
+                        {foreach $item.sub_list as $sub_item}
+                        <div class="layui-input-block">
+                            <input type="checkbox" name="access" data-level="{$sub_item.level}" lay-filter="checkAuth" lay-skin="primary" data-pid="{$sub_item.parent_id}" value="{$sub_item.id}" title="{$sub_item.name}" {if condition="in_array($sub_item['id'], $data['access'])"}checked{/if}>
+                            {foreach $sub_item.sub_list as $sub_item2}
+                            <input type="checkbox" name="access" data-level="{$sub_item2.level}" lay-filter="checkAuth" lay-skin="primary" data-pid="{$sub_item2.parent_id}" value="{$sub_item2.id}" title="{$sub_item2.name}"{if condition="in_array($sub_item2.id, $data.access)"}checked{/if}>
+                            {/foreach}
+                        </div>
+                        {/foreach}
+                        {/foreach}
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">状态</label>
+                        <div class="layui-input-block">
+                            <input type="radio" name="status" value="1" title="启用" {if condition="$data.status eq '1' OR !isset($data.status)"}checked=""{/if}>
+                            <input type="radio" name="status" value="0" title="关闭" {if condition="$data.status eq '0'"}checked{/if}>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <div class="layui-footer" style="left: 0;">
+                                <button class="layui-btn" lay-submit="">立即提交</button>
+                                <button class="layui-btn layui-btn-primary" type="button" onclick="back_url()">返回</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+{include file="common@public/footer" /}
+<script>
+    layui.use(['index', 'form'], function(){
+        var $ = layui.$
+            ,layer = layui.layer
+            ,form = layui.form;
+
+        form.render(null, 'component-form-group');
+        // 监听选中事件
+        form.on('checkbox(checkAuth)', function(data) {
+            let parent_id = $(data.elem).data('pid');
+            let level = $(data.elem).data('level');
+            let isChecked = $(this).prop('checked');
+            if(level == 1) { // 全选所有子列表
+                $('[name=access][data-pid='+$(this).val()+']').each(function() {
+                    $('[name=access][data-pid='+$(this).val()+']').prop('checked', isChecked);
+                    $(this).prop('checked', isChecked);
+                });
+            }else if(level == 2) { // 判断父级状态以及全选子级
+                $('[name=access][data-pid='+data.value+']').prop('checked', isChecked);
+                let parentChecked = false;
+                $('[name=access][data-pid='+parent_id+']').each(function() {
+                    if($(this).prop('checked')) {
+                        parentChecked = true;
+                        return false;
+                    }
+                });
+                $('[name=access][value='+parent_id+']').prop('checked', parentChecked);
+            }else if(level == 3) { // 判断二级菜单和一级菜单选中状态
+                let secondChecked = false;
+                $('[name=access][data-pid='+parent_id+']').each(function() {
+                    if($(this).prop('checked')) {
+                        secondChecked = true;
+                        return false;
+                    }
+                });
+                $('[name=access][value='+parent_id+']').prop('checked', secondChecked);
+                let firstChecked = false;
+                if(secondChecked) {
+                    $('[name=access][value='+$('[value='+parent_id+']').data('pid')+']').prop('checked', true);
+                }else {
+                    $('[name=access][data-pid='+$('[value='+parent_id+']').data('pid')+']').each(function() {
+                        if($(this).prop('checked')) {
+                            firstChecked = true;
+                            return false;
+                        }
+                    });
+                    $('[name=access][value='+$('[value='+parent_id+']').data('pid')+']').prop('checked', firstChecked);
+                }
+
+            }
+            form.render();
+        });
+        /* 监听提交 */
+        form.on('submit()', function(data){
+            data.field.access = [];
+            $('[name=access]:checked').each(function() {
+                data.field.access.push($(this).val());
+            });
+            if(data.field.access.length == 0) {
+                alert_error('请至少选择一个权限菜单');
+                return false;
+            }
+            Post('', data.field, function(res) {
+                if (res.code == 1) {
+                    alert_success(res.msg, function() {
+                        back_url();
+                    })
+                } else {
+                    alert_error(res.msg);
+                }
+            });
+            return false;
+        });
+    });
+</script>

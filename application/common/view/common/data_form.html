@@ -1,0 +1,69 @@
+{include file="common@public/header"}
+{if condition="!$frame"}
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        {/if}
+        <div class="layui-card">
+            {if condition="!$frame"}
+            <div class="layui-card-header">{$page_title}</div>
+            {/if}
+            <div class="layui-card-body">
+                <form class="layui-form padsome" action="">
+                    {$html|raw}
+                    <div class="layui-form-item">
+                        {if condition="!$frame"}
+                        <div class="layui-input-block">
+                            <div class="layui-footer" style="left: 0;">
+                                <button class="layui-btn" lay-submit="">立即提交</button>
+                            </div>
+                        </div>
+                        {else /}
+                        <div class="layui-input-block layui-layout-admin">
+                            <div class="layui-footer" style="left: 0;">
+                                <button class="layui-btn" lay-submit="">立即提交</button>
+                                <button class="layui-btn layui-btn-primary" type="button" onclick="close_frame()">返回</button>
+                            </div>
+                        </div>
+                        {/if}
+                    </div>
+                </form>
+            </div>
+        </div>
+        {if condition="$frame"}
+    </div>
+</div>
+{/if}
+{include file="common@public/ueditor" /}
+{include file="common@public/umeditor" /}
+{include file="common@public/footer" /}
+<script>
+    layui.extend({
+        xmSelect: 'xm-select'
+    }).use(['index', 'form', 'layarea', 'laydate', 'xmSelect'], function(){
+        var $       = layui.$;
+        var form    = layui.form;
+
+        var data    = {$data|json_encode|raw};
+
+        // 表单JS
+        {$js|raw}
+
+        form.render();
+        // 监听表单提交
+        form.on('submit()', function(data){
+            Post('', data.field, function(res) {
+                if (res.code == 1) {
+                    alert_success(res.msg, function() {
+                        parent.layui.table.reload('table', {where: parent.where});
+                        close_frame();
+                    })
+                } else {
+                    alert_error(res.msg);
+                }
+            });
+            return false;
+        });
+
+    <?php $extend_tpl = file_get_contents($tpl); echo str_replace(['<script>', '</script>'], ['', ''], $extend_tpl)?>
+});
+</script>

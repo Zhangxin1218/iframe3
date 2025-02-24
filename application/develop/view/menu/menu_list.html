@@ -1,0 +1,40 @@
+{include file="index/header"}
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md2"></div>
+        <div class="layui-card layui-col-md8">
+            <div class="layui-card-header">菜单管理</div>
+            <div class="layui-card-body">
+                <a class="layui-btn" href="{:url('Menu/add_menu', ['mg_module'=>$mg_module])}">添加菜单</a>
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>菜单名称</th>
+                        <th>路由</th>
+                        <th>菜单状态</th>
+                        <th>排序</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {foreach $list as $item}
+                    <tr>
+                        <td>{$item.id}</td>
+                        <td>{$item.name|raw}</td>
+                        <td>{$item.router}</td>
+                        <td>{$item.status == 1 ? '正常' : '禁用'}</td>
+                        <td>{$item.sort|raw}</td>
+                        <td>
+                            <a class="layui-btn layui-btn-xs layui-btn-normal" href="{:url('Menu/edit_menu', ['id'=>$item['id'], 'mg_module'=>$mg_module])}">编辑</a>
+                            <a class="layui-btn layui-btn-xs layui-btn-danger" href="javascript: confirm('{:url('Menu/del_menu', ['id'=>$item['id'], 'mg_module'=>$mg_module])}', '是否确认删除？')">删除</a>
+                        </td>
+                    </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="layui-col-md2"></div>
+    </div>
+</div>

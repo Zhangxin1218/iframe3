@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>后台管理</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="{$resource_url}layuiadmin/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="{$resource_url}layuiadmin/style/admin.css" media="all">
+    <link rel="stylesheet" href="{$resource_url}layuiadmin/style/login.css" media="all">
+    <link rel="stylesheet" href="{$resource_url}admin/css/login.css" media="all">
+    <style>
+        td img {
+            width: 40px;
+            height: 40px;
+            display: block;
+        }
+        .layui-search {
+            display: block;
+            padding: 10px 10px 0 10px;
+            border: 1px solid #e6e6e6;
+            background-color: #f2f2f2;
+            margin-top: 10px;
+        }
+        .layui-search .layui-col-md3, .layui-search .layui-col-md9 {
+            margin-bottom: 10px;
+        }
+        .layui-search label {
+            float: left;
+            display: block;
+            width: 80px;
+            font-weight: 400;
+            line-height: 20px;
+            text-align: right;
+            padding: 9px 9px 9px 0;
+            text-align-last: justify;
+            font-size: 13px;
+        }
+        .layui-search .layui-input-inline {
+            width: calc(100% - 100px);
+        }
+        .layui-form-mid {
+            float: none !important;
+        }
+        .layui-form-select .layui-anim {
+            z-index: 999999;
+        }
+        .img_preview {
+            cursor: pointer;
+        }
+        .table_img_preview {
+            cursor: pointer;
+            width: 35px !important;
+            height: 35px !important;
+        }
+    </style>
+    <script>
+        var UPLOAD_URL   = '{:url("admin/Upload/upload_file")}';
+        var RESOURCE_URL = '{$resource_url}';
+    </script>
+</head>
+<body>

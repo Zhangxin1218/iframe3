@@ -1,0 +1,62 @@
+<script src="{$resource_url}layuiadmin/layui/layui.js"></script>
+<script src="{$resource_url}admin/js/common.js"></script>
+<script>
+    layui.config({
+        base: '{$resource_url}layuiadmin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['layer', 'form'], function() {
+        var $       = layui.$;
+        var form    = layui.form;
+        var layer   = layui.layer;
+        form.render();
+        form.on('checkbox(checkAll)', function(data) {
+            if($(data.elem).prop('checked')) {
+                $('[name="ids[]"]').prop("checked", true);
+                form.render();
+            }else {
+                $('[name="ids[]"]').prop("checked", false);
+                form.render();
+            }
+        });
+        $('.img_preview').click(function () {
+            // 创建对象
+            var img = new Image();
+            img.src = $(this).attr('src');
+            var height = img.height, width = img.width;
+            while(width > 800 || height > 400) {
+                height /= 2;
+                width /= 2;
+            }
+            layer.open({
+                type: 1,
+                shade: false,
+                title: false,
+                area: [width+'px', height+ 'px'],
+                content: '<img style="width: '+width+'px; height: '+height+'px;" src="'+$(this).attr('src')+'"/>'
+            });
+        });
+    });
+    // 图片预览
+    function img_preview(obj) {
+        var $ = layui.$;
+        var layer = layui.layer;
+        // 创建对象
+        var img = new Image();
+        img.src = $(obj).attr('src');
+        var height = img.height, width = img.width;
+        while(width > 800 || height > 400) {
+            height /= 2;
+            width /= 2;
+        }
+        layer.open({
+            type: 1,
+            shade: false,
+            title: false,
+            area: [width+'px', height+ 'px'],
+            content: '<img style="width: '+width+'px; height: '+height+'px;" src="'+$(obj).attr('src')+'"/>'
+        });
+    }
+</script>
+</body>
+</html>

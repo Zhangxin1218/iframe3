@@ -1,0 +1,61 @@
+{include file="common@public/header"}
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-card">
+            <div class="layui-card-header">{$page_title}</div>
+            <div class="layui-card-body">
+                <form class="layui-search layui-form" action="" method="get">
+                    <div class="layui-col-md3">
+                        <label>名称</label>
+                        <div class="layui-input-inline">
+                            <input type="text" class="layui-input" name="name" value="{$where.name}" placeholder="请输入名称">
+                        </div>
+                    </div>
+                    <div class="layui-col-md3 layui-search-submit">
+                        <div class="layui-input-inline">
+                            <button class="layui-btn layui-btn-normal" type="button" onclick="search(this)">搜索</button>
+                            <button class="layui-btn layui-btn-danger" type="button" onclick="export_excel(this)">导出</button>
+                        </div>
+                    </div>
+                    <div class="layui-clear"></div>
+                </form>
+                <table class="layui-table layui-form">
+                    <thead>
+                    <tr>
+                        <th style="width: 15px; text-align: center"><input type="checkbox" lay-filter="checkAll" lay-skin="primary"></th>
+                        <th>ID</th>
+                        <th>名称</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    {if condition="empty($list)"}
+                    <tr>
+                        <td colspan="5" align="center">暂无数据！</td>
+                    </tr>
+                    {/if}
+                    <tbody>
+                    {foreach $list as $item}
+                    <tr>
+                        <td><input type="checkbox" name="ids[]" value="{$item.id}" lay-skin="primary"></td>
+                        <td>{$item.id}</td>
+                        <td>{$item.name}</td>
+                        <td>
+                            <!--操作按钮开始-->
+                            {:access_button('', ['id'=>$item['id']], '编辑')}
+                            {:access_button('', ['id'=>$item['id']], '删除', 'confirm')}
+                            <!--操作按钮结束-->
+                        </td>
+                    </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+                <!--分页按钮输出开始-->
+                <div class="page">
+                    {$page|raw}
+                </div>
+                <!--分页按钮输出结束-->
+            </div>
+        </div>
+    </div>
+</div>
+{include file="common@public/footer" /}

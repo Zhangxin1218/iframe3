@@ -1,0 +1,14 @@
+<script src="{$resource_url}echarts/test/lib/esl.js"></script>
+<script src="{$resource_url}echarts/test/lib/config.js"></script>
+<script src="{$resource_url}echarts/dist/echarts.js"></script>
+<script>
+    function show_echarts(id, option) {
+        require([
+            '{$resource_url}echarts/dist/echarts'
+        ], function (echarts) {
+            var chart = echarts.init(document.getElementById(id));
+            chart.setOption(option);
+            window.onresize = chart.resize;
+        });
+    }
+</script>

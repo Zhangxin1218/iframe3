@@ -1,0 +1,135 @@
+{include file="index/header"}
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md1"></div>
+        <div class="layui-card layui-col-md10">
+            <div class="layui-card-header">菜单管理</div>
+            <div class="layui-card-body">
+                <form class="layui-form padsome" action="">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">父级菜单</label>
+                        <div class="layui-input-block">
+                            <select name="parent_id" lay-filter="change_parent_menu">
+                                <option value="0" data-module="admin">请选择父级菜单</option>
+                                {foreach $parent_menu as $item}
+                                {if condition="$item['level'] <= 2"}
+                                <option value="{$item.id}" data-module="{$item['module']}" data-controller="{$item['controller']}" data-level="{$item['level']}" {if condition="$data.parent_id eq $item.id"}selected{/if}>{$item.name|raw}</option>
+                                {/if}
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">菜单名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="name" value="{$data.name}" lay-verify="required" autocomplete="off" placeholder="请输入菜单名称" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">模块名</label>
+                        <div class="layui-input-block">
+                            <div class="layui-input-inline">
+                                <input type="text" name="module" value="{$data.module ? $data.module : $mg_module}" lay-verify="required" placeholder="请输入模块名" autocomplete="off" class="layui-input">
+                            </div>
+                            <label class="layui-form-label">控制器名</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="controller" value="{$data.controller}" placeholder="请输入控制器名" autocomplete="off" class="layui-input">
+                            </div>
+                            <label class="layui-form-label">方法名</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="action" value="{$data.action}" placeholder="请输入方法名" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-input-block layui-form-intro">
+                            <div class="layui-form-mid layui-word-aux">例：一级菜单控制器和方法可留空</div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">菜单Icon</label>
+                        <div class="layui-input-block">
+                            <div class="layui-input-inline">
+                                <input type="text" name="icon" value="{$data.icon}" placeholder="请输入菜单Icon" autocomplete="off" class="layui-input">
+                            </div>
+                            <label class="layui-form-label">按钮样式</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="style" value="{$data.style}" placeholder="请输入按钮样式" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-input-block layui-form-intro">
+                            <div class="layui-form-mid layui-word-aux" style="float: none;">填写layui的CSS样式 例：<span class="layui-badge">layui-icon-delete</span>
+                                <a href="https://www.layui.com/doc/element/icon.html" target="_blank">icon文档</a>
+                                <a href="https://www.layui.com/doc/element/button.html" target="_blank">按钮文档</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">排序</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="sort" value="{$data.sort ? $data.sort : 99}" lay-verify="required" placeholder="请输入排序" autocomplete="off" class="layui-input">
+                        </div>
+                        <div class="layui-input-block layui-form-intro">
+                            <div class="layui-form-mid layui-word-aux">例：序号越小排序越靠前</div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">状态</label>
+                        <div class="layui-input-block">
+                            <input type="radio" name="status" value="1" title="启用" {if condition="$data.status eq '1' OR !isset($data.status)"}checked=""{/if}>
+                            <input type="radio" name="status" value="0" title="禁用" {if condition="$data.status eq '0'"}checked{/if}>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">BuildPage</label>
+                        <div class="layui-input-block">
+                            <input type="radio" name="build_page" value="" title="不创建" checked>
+                            <input type="radio" name="build_page" value="table" title="Table页面">
+                            <input type="radio" name="build_page" value="form" title="Form页面">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <div class="layui-footer" style="left: 0;">
+                                <button class="layui-btn" lay-submit="">立即提交</button>
+                                <button class="layui-btn layui-btn-primary" type="button" onclick="back_url()">返回</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="layui-col-md1"></div>
+    </div>
+</div>
+<script>
+    layui.use(['index', 'form'], function() {
+        var $ = layui.$
+            ,form = layui.form;
+
+        // 渲染表单样式
+        form.render();
+
+        // 监听父级菜单选中
+        form.on('select(change_parent_menu)', function(data) {
+            var module     = $(data.elem).find('option:selected').data('module');
+            var controller = $(data.elem).find('option:selected').data('controller');
+            var level      = $(data.elem).find('option:selected').data('level');
+            $('input[name=module]').val(module);
+            $('input[name=controller]').val(controller);
+            if(level == 2) $('input[name=style]').val('layui-btn-xs ');
+        });
+
+        // 监听提交
+        form.on('submit()', function(data){
+            Post('', data.field, function(res) {
+                if (res.code == 1) {
+                    alert_success(res.msg, function() {
+                        location.href = '{:url("Menu/menu_list", ["mg_module"=>$mg_module])}';
+                    });
+                } else {
+                    alert_error(res.msg);
+                }
+            });
+            return false;
+        });
+    });
+</script>

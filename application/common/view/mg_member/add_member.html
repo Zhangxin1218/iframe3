@@ -1,0 +1,80 @@
+{include file="common@public/header"}
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-card">
+            <div class="layui-card-header">{$page_title}</div>
+            <div class="layui-card-body">
+                <form class="layui-form padsome" action="">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">管理组</label>
+                        <div class="layui-input-block">
+                            <select name="group_id" lay-verify="required">
+                                <option value="">请选择管理组</option>
+                                {foreach $group_list as $item}
+                                <option value="{$item.id}" {if condition="$data.group_id eq $item.id"}selected{/if}>{$item.group_name|raw}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">管理员名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="nickname" value="{$data.nickname}" lay-verify="required" autocomplete="off" placeholder="请输入管理员名称" class="layui-input">
+                        </div>
+                        <div class="layui-input-block layui-form-intro">
+                            <div class="layui-form-mid layui-word-aux">请填写管理员名称或备注</div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">登陆账号</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="username" value="{$data.username}" lay-verify="required" {$data.username ? 'disabled' : ''} autocomplete="off" placeholder="请输入登陆账号" class="layui-input">
+                        </div>
+                        <div class="layui-input-block layui-form-intro">
+                            <div class="layui-form-mid layui-word-aux">初始密码为：123456，请自行修改登录密码</div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">状态</label>
+                        <div class="layui-input-block">
+                            <input type="radio" name="status" value="1" title="启用" {if condition="$data.status eq '1' OR !isset($data.status)"}checked=""{/if}>
+                            <input type="radio" name="status" value="0" title="关闭" {if condition="$data.status eq '0'"}checked{/if}>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <div class="layui-footer" style="left: 0;">
+                                <button class="layui-btn" lay-submit="">立即提交</button>
+                                <button class="layui-btn layui-btn-primary" type="button" onclick="back_url()">返回</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+{include file="common@public/footer" /}
+<script>
+    layui.use(['index', 'form'], function(){
+        var $ = layui.$
+            ,layer = layui.layer
+            ,form = layui.form;
+
+        form.render(null, 'component-form-group');
+        /* 监听提交 */
+        form.on('submit()', function(data){
+            Post('', data.field, function(res) {
+                if (res.code == 1) {
+                    alert_success(res.msg, function() {
+                        back_url();
+                    })
+                } else {
+                    alert_error(res.msg);
+                }
+            });
+            return false;
+        });
+    });
+</script>

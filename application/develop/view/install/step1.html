@@ -1,0 +1,163 @@
+{include file="common@public/header" /}
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md1"></div>
+        <div class="layui-card layui-col-md10">
+            <div class="layui-card-header">三国服务器 THINKPHP-5.1 自动化后台3.0  - Step1 开发配置写入</div>
+            <div class="layui-card-body">
+                <form action="" class="layui-form">
+                    <fieldset class="layui-elem-field">
+                        <legend>上传配置</legend>
+                        <div class="layui-field-box">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">OSS阿里</label>
+                                <div class="layui-input-block">
+                                    <input type="checkbox" name="oss_open" value="1" lay-text="On|Off" lay-skin="switch" lay-filter="oss_switch">
+                                </div>
+                            </div>
+                            <div id="oss_box" style="display: none;">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">上传目录名</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="oss_dir" value="" placeholder="请输入上传目录名" class="layui-input">
+                                    </div>
+                                    <div class="layui-input-block layui-form-intro">
+                                        <div class="layui-form-mid layui-word-aux">OSS上传目录应该按照项目名称分项目存储, 命名格式以字母开头，可以为字母和数字</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-field-box">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">COS腾讯</label>
+                                <div class="layui-input-block">
+                                    <input type="checkbox" name="cos_open" value="1" lay-text="On|Off" lay-skin="switch" lay-filter="cos_switch">
+                                </div>
+                            </div>
+                            <div id="cos_box" style="display: none;">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">上传目录名</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="cos_dir" value="" placeholder="请输入上传目录名" class="layui-input">
+                                    </div>
+                                    <div class="layui-input-block layui-form-intro">
+                                        <div class="layui-form-mid layui-word-aux">COS上传目录应该按照项目名称分项目存储, 命名格式以字母开头，可以为字母和数字</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="layui-elem-field">
+                        <legend>开发环境配置</legend>
+                        <div class="layui-field-box">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">DB_HOST</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="develop[db_host]" value="127.0.0.1" lay-verify="required" placeholder="数据库连接地址" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">DB_PORT</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="develop[db_port]" value="3306" lay-verify="required" placeholder="数据库端口" class="layui-input">
+                                </div>
+                                <label class="layui-form-label">DB_CHAR</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="develop[db_char]" value="utf8mb4" lay-verify="required" placeholder="数据库编码" class="layui-input">
+                                </div>
+                                <label class="layui-form-label">DB_NAME</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="develop[db_name]" value="" lay-verify="required" placeholder="数据库名称" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">DB_USER</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="develop[db_user]" value="root" lay-verify="required" placeholder="数据库账号" class="layui-input">
+                                </div>
+                                <label class="layui-form-label">DB_PASS</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="develop[db_pass]" value="root" placeholder="数据库密码" class="layui-input">
+                                </div>
+                                <label class="layui-form-label">DB_PRE</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="develop[db_pre]" value="" lay-verify="required" placeholder="数据表前缀" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">REDIS_HOST</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="develop[redis_host]" value="47.110.91.60" lay-verify="required" placeholder="redis连接地址" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">REDIS_PORT</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="develop[redis_port]" value="27635" lay-verify="required" placeholder="redis端口" class="layui-input">
+                                </div>
+                                <label class="layui-form-label">REDIS_PASS</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="develop[redis_pass]" value="1yVXE0uOItLIBCE" placeholder="redis密码" class="layui-input">
+                                </div>
+                                <label class="layui-form-label">REDIS_INDEX</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="develop[redis_index]" value="" lay-verify="required" placeholder="redis库" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-input-block layui-form-intro">
+                                <div class="layui-form-mid layui-word-aux">
+                                    Redis库使用说明：41-曾鑫 42-吴锦文 43-杨云天, 李万鹏 44-韶敏 45-李典彪
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn layui-btn-normal" lay-submit="">写入开发配置</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="layui-col-md1"></div>
+    </div>
+</div>
+{include file="common@public/footer" /}
+<script>
+    layui.use(['form'], function() {
+        var form = layui.form;
+        var $    = layui.$;
+
+        form.render();
+
+        form.on('switch(oss_switch)', function(data) {
+            if($(data.elem).prop('checked')) {
+                $('#oss_box').show();
+            }else {
+                $('#oss_box').hide();
+            }
+        });
+
+        form.on('switch(cos_switch)', function(data) {
+            if($(data.elem).prop('checked')) {
+                $('#cos_box').show();
+            }else {
+                $('#cos_box').hide();
+            }
+        });
+
+        form.on('submit()', function(data) {
+            Post('{:url("Install/step1")}', data.field, function(res) {
+                if(res.code == 1) {
+                    alert_success(res.msg, function() {
+                        location.href = '{:url("Install/step2")}';
+                    });
+                }else {
+                    alert_error(res.msg);
+                }
+            });
+            return false;
+        });
+    });
+</script>

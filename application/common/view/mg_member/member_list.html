@@ -1,0 +1,45 @@
+{include file="common@public/header"}
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-card">
+            <div class="layui-card-header">{$page_title}</div>
+            <div class="layui-card-body">
+                {:access_button('MgMember/add_member')}
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <th>管理组</th>
+                        <th>管理员名称</th>
+                        <th>登录账号</th>
+                        <th>状态</th>
+                        <th>上次登录时间</th>
+                        <th>上次登录IP</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {foreach $list as $item}
+                    <tr>
+                        <td>{$item.group_name}</td>
+                        <td>{$item.nickname}</td>
+                        <td>{$item.username}</td>
+                        <td>{$item.status == 1 ? '正常' : '禁用'}</td>
+                        <td>{$item.last_login_time}</td>
+                        <td>{$item.last_login_ip}</td>
+                        <td>
+                            {:access_button('MgMember/edit_member', ['id'=>$item['id']], '编辑')}
+                            {:access_button('MgMember/reset_pwd', ['id'=>$item['id']], '修改密码', 'frame', ['400px', '320px'])}
+                            {if condition="$item['id'] != 1"}
+                            {:access_button('MgMember/del_member', ['id'=>$item['id']], '删除', 'confirm')}
+                            {/if}
+                        </td>
+                    </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+                {$page|raw}
+            </div>
+        </div>
+    </div>
+</div>
+{include file="common@public/footer" /}

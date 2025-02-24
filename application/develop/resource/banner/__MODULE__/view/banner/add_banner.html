@@ -1,0 +1,112 @@
+{include file="common@public/header"}
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-card">
+            <div class="layui-card-header">{$page_title} <a href="javascript: back_url();" class="layui-btn layui-btn-primary layui-layout-right">返回上级</a></div>
+            <div class="layui-card-body">
+                <form class="layui-form padsome" action="">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">图片位置</label>
+                        <div class="layui-input-block">
+                            <select name="position">
+                                <option value="">请选择位置</option>
+                                {foreach $position_list as $key => $item}
+                                <option value="{$key}" {$data.position == $key ? 'selected' : ''}>{$item}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">图片名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="name" value="{$data.name}" lay-verify="required" placeholder="请输入图片名称" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">展示图片</label>
+                        <div class="layui-input-block">
+                            <input type="hidden" id="image" name="image" value="{$data.image}" lay-verify="required">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">跳转类型</label>
+                        <div class="layui-input-block">
+                            <select name="type" lay-filter="type_change">
+                                {foreach $type_list as $key => $item}                                                                                                                                                                                                                                                      _list as $key => $item}
+                                <option value="{$key}" {$data.position == $key ? 'selected' : ''}>{$item}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item" id="url_input" style="display: none;">
+                        <label class="layui-form-label">跳转地址</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="url" value="{$data.url}" placeholder="请输入跳转地址" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">状态</label>
+                        <div class="layui-input-block">
+                            <input type="radio" name="status" value="1" title="展示" {$data.status == '1' || !isset($data) ? 'checked' : ''}>
+                            <input type="radio" name="status" value="0" title="隐藏" {$data.status == '0' ? 'checked' : ''}>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">排序</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="sort" value="{$data.sort ? $data.sort : 99}" lay-verify="required" placeholder="请输入排序" autocomplete="off" class="layui-input">
+                        </div>
+                        <div class="layui-input-block layui-form-intro">
+                            <div class="layui-form-mid layui-word-aux">序号越小越靠前</div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <div class="layui-footer" style="left: 0;">
+                                <button class="layui-btn" lay-submit="">立即提交</button>
+                                <button class="layui-btn layui-btn-primary" type="button" onclick="back_url()">返回</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{include file="common@public/footer" /}
+<script>
+    layui.use(['index', 'form', 'layedit'], function(){
+        var $ = layui.$
+            ,form = layui.form;
+
+        if($('[name=type]').val() > 0) {
+            $('#url_input').show();
+        }
+        form.render(null, 'component-form-group');
+
+        uploadInit('image');
+
+        form.on('select(type_change)', function(data) {
+            if(data.value > 0) {
+                $('#url_input').show();
+            }else {
+                $('#url_input').hide();
+            }
+        });
+
+        // 监听表单提交
+        form.on('submit()', function(data){
+            delete data.field.file;
+            Post('', data.field, function(res) {
+                if (res.code == 1) {
+                    alert_success(res.msg, function() {
+                        back_url();
+                    })
+                } else {
+                    alert_error(res.msg);
+                }
+            });
+            return false;
+        });
+    });
+</script>

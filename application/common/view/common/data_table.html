@@ -1,0 +1,29 @@
+{include file="common@public/header"}
+{if condition="!$frame"}
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        {/if}
+        <div class="layui-card">
+            {if condition="!$frame"}<div class="layui-card-header">{$page_title}</div>{/if}
+            <div class="layui-card-body">
+                {$where|raw}
+                <table id="table"></table>
+                <script type="text/html" id="toolbar_row">
+                    {$toolbar_orw|raw}
+                </script>
+            </div>
+        </div>
+        {if condition="!$frame"}
+    </div>
+</div>
+{/if}
+{include file="common@public/footer" /}
+{include file="common@public/table" /}
+<script>
+    layui.use(['index', 'form', 'table'], function(){
+        var $       = layui.$;
+        var table   = layui.table;
+
+    <?php $extend_tpl = file_get_contents($tpl); echo str_replace(['<script>', '</script>'], ['', ''], $extend_tpl)?>
+});
+</script>

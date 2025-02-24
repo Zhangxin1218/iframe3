@@ -1,0 +1,125 @@
+<script>
+    layui.use(['index', 'table', 'form', 'laydate', 'layarea'], function() {
+        var $       = layui.$;
+        var form    = layui.form;
+        var table   = layui.table;
+        var laydate = layui.laydate;
+        var layarea = layui.layarea;
+        table.render({$table|raw});
+        {$js|raw}
+
+        // toolbar 按钮监听
+        table.on('tool()', function(data) {
+            var url = layui.$(this).data('url');
+            var text = layui.$(this).data('text');
+            var param = layui.$(this).data('param');
+            if(data.event == 'url') {
+                location.href = url + '?id='+data.data.id;
+            }else if(data.event == 'confirm') {
+                var url = url + '?id='+data.data.id;
+                confirm(url, text);
+            }else if(data.event == 'frame') {
+                open_frame(url + '?id='+data.data.id, text, eval(param));
+            }else if(data.event == 'prompt') {
+                _prompt(url + '?id='+data.data.id, text);
+            }
+        });
+
+        // toolbar_row 按钮监听
+        table.on('toolbar()', function(data) {
+            var url = layui.$(this).data('url') + '{$query}';
+            var text = layui.$(this).data('text');
+            var param = layui.$(this).data('param');
+            if(data.event == 'url') {
+                location.href = url;
+            }else if(data.event == 'batch') {
+                var checked = table.checkStatus('table').data;
+                var id = [];
+                for(var i=0; i<checked.length; i++) {
+                    id.push(checked[i].id);
+                }
+                if(id.length == 0) {
+                    alert_error('请至少选择一行数据');
+                    return false;
+                }
+                layer.confirm(text, {
+                    btn: ['确认','取消']
+                }, function(){
+                    Post(url, {id:id}, function (res) {
+                        if(res.code == 1) {
+                            alert_success(res.msg, function () {
+                                table_reload();
+                            });
+                        }else {
+                            alert_error(res.msg);
+                        }
+                    });
+                });
+            }else if(data.event == 'confirm') {
+                confirm(url, text);
+            }else if(data.event == 'frame') {
+                open_frame(url, text, eval(param));
+            }else if(data.event == 'upload') {
+                _upload(url, text);
+            }
+        });
+
+        // 开关监听
+        form.on('switch(table_switch)', function(data) {
+            var url = $(data.elem).data('url');
+            Post(url, {checked: $(data.elem).is(":checked") ? 1: 0}, function(res) {
+                if(res.code == 1) {
+                    table_reload();
+                }else {
+                    alert_error(res.msg);
+                }
+            });
+        });
+
+        // 行内编辑监听
+        table.on('edit()', function(data){
+            Post('{$table_edit_url}', {id:data.data.id, field: data.field, value: data.value}, function(res) {
+                if(res.code == 1) {
+                    table_reload();
+                }else {
+                    alert_error(res.msg);
+                }
+            });
+        });
+    });
+
+    // 表格刷新
+    function table_reload() {
+        var table = layui.table;
+        table.reload('table', {
+            where: window.where
+        })
+    }
+
+    // 表格搜索
+    var where = {};
+    function table_search(obj) {
+        var $ = layui.$, table = layui.table;
+        var fields = {};
+        $(obj).parent().find('[name=export_excel]').remove();
+        $('.layui-search input').each(function () {
+            var name = $(this).attr('name');
+            if(name) {
+                fields[name] = $(this).val();
+            }
+        });
+        $('.layui-search select').each(function () {
+            var name = $(this).attr('name');
+            if(name) {
+                fields[name] = $(this).val();
+            }
+        });
+        window.where = fields;
+        table.reload('table', {
+            where: fields,
+            page: {
+                curr: 1 // 重新从第 1 页开始
+            },
+        });
+    }
+</script>

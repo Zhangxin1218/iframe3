@@ -1,0 +1,32 @@
+{include file="common@public/header"}
+<ul class="layui-nav">
+    <li class="layui-nav-item layui-this"><a href="{:url('Index/add_module')}">添加后台管理</a></li>
+    <li class="layui-nav-item">
+        <a href="javascript:;">菜单管理</a>
+        <dl class="layui-nav-child">
+            {foreach $module_list as $item}
+            <dd><a href="{:url('Menu/menu_list', ['mg_module'=>$item])}">{$item}</a></dd>
+            {/foreach}
+        </dl>
+    </li>
+    <li class="layui-nav-item">
+        <a href="javascript:;">插件安装</a>
+        <dl class="layui-nav-child">
+            {foreach $module_list as $key => $item}
+            {if condition="$key > 0"}
+            <?php break;?>
+            {/if}
+            <dd><a href="{:url('Plugin/plugin_list', ['mg_module'=>$item])}">{$item}</a></dd>
+            {/foreach}
+        </dl>
+    </li>
+</ul>
+{include file="common@public/footer"}
+<script>
+    //注意：导航 依赖 element 模块，否则无法进行功能性操作
+    layui.use('element', function(){
+        var element = layui.element;
+
+        //…
+    });
+</script>

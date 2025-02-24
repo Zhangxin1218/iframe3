@@ -1,0 +1,48 @@
+{include file="common@public/header" /}
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md2"></div>
+        <div class="layui-card layui-col-md8">
+            <div class="layui-card-header">三国服务器 THINKPHP 6.0 自动化后台2.0  - Step2 后台创建</div>
+            <div class="layui-card-body">
+                <form action="" class="layui-form">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">后台模块</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="mg_module" class="layui-input" value="admin" placeholder="后台模块名称" lay-verify="required">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn layui-btn-normal" lay-submit="">开始创建后台</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="layui-col-md2"></div>
+    </div>
+</div>
+{include file="common@public/footer" /}
+<script>
+    layui.use(['form'], function() {
+        var form  = layui.form;
+        var $     = layui.$;
+        var layer = layui.layer;
+
+        form.render();
+
+        form.on('submit()', function(data) {
+            Post('', data.field, function(res) {
+                if(res.code == 1) {
+                    alert_success(res.msg, function() {
+                        location.href = '{:url("Index/index")}';
+                    });
+                }else {
+                    alert_error(res.msg);
+                }
+            });
+            return false;
+        });
+    });
+</script>

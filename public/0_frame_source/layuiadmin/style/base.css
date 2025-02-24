@@ -1,0 +1,12 @@
+.clear{
+    padding: 0 15px 0 15px;
+}
+.clear::after{
+    display:block;clear:both;content:"";visibility:hidden;height:0
+}
+.stl{
+    padding: 10px 15px 0 15px;
+}
+.layui-table-page .layui-laypage span.layui-laypage-limits{
+    display: none;
+}

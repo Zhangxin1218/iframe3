@@ -1,0 +1,20 @@
+<script>
+    form.on('radio(type_change)', function(data) {
+        if(data.value == 2 || data.value == 4) {
+            $('#stock').hide();
+        }else {
+            $('#stock').show();
+        }
+
+        if(data.value == 3) {
+            $('#value').show();
+        }else {
+            $('#value').hide();
+        }
+    });
+
+    if($('[name=type]:checked').val() == 3) {
+        $('#value').show();
+    }
+
+</script>

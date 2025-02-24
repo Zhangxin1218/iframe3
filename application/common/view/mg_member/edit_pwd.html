@@ -1,0 +1,69 @@
+{include file="common@public/header"}
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-card">
+            <div class="layui-card-header">修改密码</div>
+            <div class="layui-card-body">
+                <form class="layui-form padsome" action="">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">原密码</label>
+                        <div class="layui-input-block">
+                            <input type="password" name="old_password" lay-verify="required" autocomplete="off" placeholder="请输入原密码" class="layui-input">
+                        </div>
+                        <div class="layui-input-block layui-form-intro">
+                            <div class="layui-form-mid layui-word-aux">请输入当前密码</div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">新密码</label>
+                        <div class="layui-input-block">
+                            <input type="password" name="password" lay-verify="required" autocomplete="off" placeholder="请输入新密码" class="layui-input">
+                        </div>
+                        <div class="layui-input-block layui-form-intro">
+                            <div class="layui-form-mid layui-word-aux">输入6-32位字符</div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">重复密码</label>
+                        <div class="layui-input-block">
+                            <input type="password" name="re_password" lay-verify="required" autocomplete="off" placeholder="请重复输入密码" class="layui-input">
+                        </div>
+                        <div class="layui-input-block layui-form-intro">
+                            <div class="layui-form-mid layui-word-aux">请重复输入密码</div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <div class="layui-footer" style="left: 0;">
+                                <button class="layui-btn" lay-submit="">修改密码</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{include file="common@public/footer" /}
+<script>
+    layui.use(['index', 'form'], function(){
+        var $ = layui.$
+            ,layer = layui.layer
+            ,form = layui.form;
+
+        form.render();
+
+        form.on('submit()', function(data){
+            Post('', data.field, function(res) {
+                if (res.code == 1) {
+                    alert_success(res.msg, function() {
+                        parent.location.reload();
+                    })
+                } else {
+                    alert_error(res.msg);
+                }
+            });
+            return false;
+        });
+    });
+</script>

@@ -1,0 +1,32 @@
+{include file="index/header"}
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-card layui-col-md12">
+            <div class="layui-card-header">模块列表</div>
+            <div class="layui-card-body">
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <th>模块名称</th>
+                        <th>模块介绍</th>
+                        <th>更新时间</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {foreach $list as $item}
+                    <tr>
+                        <td>{$item.name}</td>
+                        <td>{$item.intro}</td>
+                        <td>{$item.update_time}</td>
+                        <td>
+                            <a class="layui-btn layui-btn-xs layui-btn-normal" href="javascript: confirm('{:url('plugin/install_plugin', ['mg_module'=>$mg_module, 'module'=>$item['module']])}', '是否要安装此插件？');">安装</a>
+                        </td>
+                    </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

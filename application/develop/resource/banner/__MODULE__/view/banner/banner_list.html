@@ -1,0 +1,71 @@
+{include file="common@public/header"}
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-card">
+            <div class="layui-card-header">{$page_title}</div>
+            <div class="layui-card-body">
+                {:access_button('Banner/add_banner')}
+                <form class="layui-search " action="" method="get">
+                    <div class="layui-col-md3">
+                        <label>图片名称</label>
+                        <div class="layui-input-inline">
+                            <input type="text" class="layui-input" name="name" value="{$where.name}" placeholder="请输入图片名称">
+                        </div>
+                    </div>
+                    <div class="layui-col-md3 layui-search-submit">
+                        <div class="layui-input-inline">
+                            <button class="layui-btn layui-btn-normal" type="button" onclick="search(this)">搜索</button>
+                        </div>
+                    </div>
+                    <div class="layui-clear"></div>
+                </form>
+                <table class="layui-table layui-form">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>位置</th>
+                        <th>类型</th>
+                        <th>图片名称</th>
+                        <th>地址</th>
+                        <th>排序</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!--无数据样式开始-->
+                    {if condition="empty($list)"}
+                    <tr>
+                        <td colspan="8" align="center">暂无数据！</td>
+                    </tr>
+                    <!--无数据样式结束-->
+                    {/if}
+                    {foreach $list as $item}
+                    <tr>
+                        <td>{$item.id}</td>
+                        <td>{$item.position_text}</td>
+                        <td>{$item.type_text}</td>
+                        <td>{$item.name}</td>
+                        <td>{$item.type > 0 ? $item.url : '-'}</td>
+                        <td>{$item.sort}</td>
+                        <td>{$item.status == 1 ? '展示' : '隐藏'}</td>
+                        <td>
+                            <!--操作按钮开始-->
+                            {:access_button('Banner/edit_banner', ['id'=>$item['id']], '编辑')}
+                            {:access_button('Banner/del_banner', ['id'=>$item['id']], '删除', 'confirm')}
+                            <!--操作按钮结束-->
+                        </td>
+                    </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+                <!--分页按钮输出开始-->
+                <div class="page">
+                    {$page|raw}
+                </div>
+                <!--分页按钮输出结束-->
+            </div>
+        </div>
+    </div>
+</div>
+{include file="common@public/footer" /}

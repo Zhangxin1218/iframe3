@@ -1,0 +1,17 @@
+<script>
+    form.on('radio(type_change)', function(data) {
+        if(data.value == 1) {
+            $('#stock').hide();
+            $('#day_stock').hide();
+        }else {
+            $('#stock').show();
+            $('#day_stock').show();
+        }
+    });
+
+    if($('[name=type]:checked').val() == 1) {
+        $('#stock').hide();
+        $('#day_stock').hide();
+    }
+
+</script>

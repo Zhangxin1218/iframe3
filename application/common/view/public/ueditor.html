@@ -1,0 +1,18 @@
+<script type="text/javascript" charset="utf-8" src="{$resource_url}ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="{$resource_url}ueditor/ueditor.all.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="{$resource_url}ueditor/lang/zh-cn/zh-cn.js"></script>
+<script>
+    // 修改百度编辑器自定义上传接口
+    UE.Editor.prototype._bkGetActionUrl = UE.Editor.prototype.getActionUrl;
+    UE.Editor.prototype.getActionUrl = function(action) {
+        if(action == 'config') {
+            return '{:url("Upload/editor_upload")}';
+        } else if(action == 'uploadimage') {
+            return '{:url("Upload/editor_upload")}?action='+action;
+        } else if(action == 'uploadvideo') {
+            return '{:url("Upload/editor_upload")}?action='+action;
+        } else {
+            return this._bkGetActionUrl.call(this, action);
+        }
+    };
+</script>

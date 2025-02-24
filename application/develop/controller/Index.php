@@ -14,7 +14,7 @@ class Index extends Base
         if($this->system['install']) {
             return $this->fetch();
         }else {
-            // 未安装过，填写配置信息
+            // 未安装过，填写配置信息 111
             return redirect('Install/step1');
         }
     }
